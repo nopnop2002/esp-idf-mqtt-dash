@@ -9,7 +9,7 @@ If you don't know what MQTT is, this app is likely not for you.
 If you know what MQTT is, this app is very helpful for you.   
 
 This app allows you to easily create your own dashboard.   
-You can send and receive MQTT from the dashboard.   
+You can send and receive MQTT from the dashboard without coding.   
 You can use the ESP32 with your own dashboard.   
 
 
