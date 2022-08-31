@@ -2,11 +2,8 @@
 Control GPIO using MQTT Dash.   
 
 # Download Android App   
-MQTT Dash (IoT, Smart Home)   
+You need MQTT Dash (IoT, Smart Home).   
 You can download from [Google Play](https://play.google.com/store/apps/details?id=net.routix.mqttdash&gl=US).   
-This app is for nerds only.   
-If you don't know what MQTT is, this app is likely not for you.   
-If you know what MQTT is, this app is very helpful for you.   
 
 # Setup Dash board   
 
@@ -68,7 +65,8 @@ This shows that this app turns on/off GPIO12.
 - Icon Image:Choose your favorite one
 - Icon Color:Choose your favorite one
 
-This shows that this app turns on/off GPIO12.   
+You can clone from GPIO12 button.   
+This shows that this app turns on/off GPIO13.   
 
 ## Add GPIO14 button   
 - Name:gpio14
@@ -79,6 +77,7 @@ This shows that this app turns on/off GPIO12.
 - Icon Image:Choose your favorite one
 - Icon Color:Choose your favorite one
 
+You can clone from GPIO12 button.   
 This shows that this app turns on/off GPIO14.   
 
 ## Add GPIO15 button   
@@ -90,6 +89,7 @@ This shows that this app turns on/off GPIO14.
 - Icon Image:Choose your favorite one
 - Icon Color:Choose your favorite one
 
+You can clone from GPIO12 button.   
 This shows that this app turns on/off GPIO15.   
 
 
@@ -107,8 +107,8 @@ Test your Dash board with mosquitto_sub.
 
 # Building ESP32 firmware
 ```
-git clone https://github.com/nopnop2002/c
-cd https://github.com/nopnop2002/esp-idf-mqtt-dash/gpio-control
+git clone https://github.com/nopnop2002/esp-idf-mqtt-dash
+cd esp-idf-mqtt-dash/gpio-control
 idf.py set-target {esp32/esp32s2/esp32s3/esp32c3}
 idf.py menuconfig
 idf.py flash
