@@ -134,3 +134,6 @@ Example:
 
 ![change_topic](https://user-images.githubusercontent.com/6020549/187810285-767f7e6e-d00b-441b-b2b8-5ef352a51ce8.jpg)
 
+As an alternative, you can use a local broker.   
+However, if you use a local broker, you won't be able to connect from outside your home.    
+
