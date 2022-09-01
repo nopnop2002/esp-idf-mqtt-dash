@@ -1,5 +1,5 @@
 # GPIO Control   
-Control GPIO using MQTT Dash.   
+GPIO Control using MQTT Dash.   
 
 # Download Android App   
 You need MQTT Dash (IoT, Smart Home).   
