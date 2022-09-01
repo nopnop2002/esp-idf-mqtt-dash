@@ -118,9 +118,11 @@ idf.py flash
 ![config-app](https://user-images.githubusercontent.com/6020549/187825856-b3ab44ff-2dd1-4e9a-afd0-ceca6641549d.jpg)
 
 - WiFi Setting   
+
 ![config-wifi](https://user-images.githubusercontent.com/6020549/187825865-573ef57b-4486-4917-8775-72a55713fb38.jpg)
 
 - Broker Setting   
+
 ![config-broker](https://user-images.githubusercontent.com/6020549/187825871-486fc80c-ed51-4402-8684-f5b812d37b9a.jpg)
 
 
