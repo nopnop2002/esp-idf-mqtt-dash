@@ -202,11 +202,13 @@ void mqtt(void *pvParameters)
 	esp_mqtt_client_register_event(mqtt_client, ESP_EVENT_ANY_ID, mqtt_event_handler, NULL);
 	esp_mqtt_client_start(mqtt_client);
 
-	MQTT_t mqttBuf;
+	int base_topic_len = strlen(CONFIG_MQTT_SUB_TOPIC)-1;
+	ESP_LOGI(TAG, "base_topic_len=%d", base_topic_len);
 	char base_topic[64];
 	strcpy(base_topic, CONFIG_MQTT_SUB_TOPIC);
-	base_topic[strlen(CONFIG_MQTT_SUB_TOPIC)-1] = 0;
+	base_topic[base_topic_len] = 0;
 	ESP_LOGI(TAG, "base_topic=[%s]", base_topic);
+	MQTT_t mqttBuf;
 	GPIO_t *gpios;
 	int16_t	ngpios;
 	while (1) {
@@ -221,9 +223,12 @@ void mqtt(void *pvParameters)
 		} else if (mqttBuf.topic_type == MQTT_SUB) {
 			ESP_LOGI(TAG, "TOPIC=%.*s\r", mqttBuf.topic_len, mqttBuf.topic);
 			ESP_LOGI(TAG, "DATA=%.*s\r", mqttBuf.data_len, mqttBuf.data);
+			// get bottom topic
+			// /esp32/gpio/init --> init
+			// /esp32/gpio/set --> set
+			// /esp32/gpio/13 --> 13
 			char bottom_topic[64];
-			int offset = strlen(CONFIG_MQTT_SUB_TOPIC) - 1;
-			strcpy(bottom_topic, &mqttBuf.topic[offset]);
+			strcpy(bottom_topic, &mqttBuf.topic[base_topic_len]);
 			ESP_LOGI(TAG, "bottom_topic=[%s]", bottom_topic);
 			if (strcmp(bottom_topic, "init") == 0) {
 				ESP_LOGI(TAG, "init ngpios=%d", ngpios);
@@ -261,13 +266,10 @@ void mqtt(void *pvParameters)
 			} else {
 				ESP_LOGI(TAG, "gpio ngpios=%d", ngpios);
 				if (ngpios == 0) continue;
-				char wk[16];
-				strcpy(wk, &mqttBuf.topic[12]);
-				ESP_LOGD(TAG, "gpio wk=[%s]", wk);
-				if (isNumber(wk) == false) {
-					ESP_LOGE(TAG, "Bad gpio [%s]", wk);
+				if (isNumber(bottom_topic) == false) {
+					ESP_LOGE(TAG, "Bad gpio [%s]", bottom_topic);
 				} else {
-					int gpio = atoi(wk);
+					int gpio = atoi(bottom_topic);
 					int value = atoi(mqttBuf.data);
 					ESP_LOGI(TAG, "gpio gpio=%d value=%d", gpio, value);
 					for(int i=0;i<ngpios;i++) {
