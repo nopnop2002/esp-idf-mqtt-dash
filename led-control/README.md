@@ -1,5 +1,5 @@
 # LED Control   
-PWM Control LED using MQTT Dash.   
+PWM Control using MQTT Dash.   
 
 # Download Android App   
 You need MQTT Dash (IoT, Smart Home).   
