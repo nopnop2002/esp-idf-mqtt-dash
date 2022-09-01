@@ -105,7 +105,7 @@ Test your Dash board with mosquitto_sub.
 ![dash-board-test](https://user-images.githubusercontent.com/6020549/187803951-91084534-5621-4952-b2e4-11f3e8cd2b1a.jpg)
 
 
-# Building ESP32 firmware
+# Build ESP32 firmware
 ```
 git clone https://github.com/nopnop2002/esp-idf-mqtt-dash
 cd esp-idf-mqtt-dash/gpio-control
@@ -113,6 +113,16 @@ idf.py set-target {esp32/esp32s2/esp32s3/esp32c3}
 idf.py menuconfig
 idf.py flash
 ```
+
+![config-main](https://user-images.githubusercontent.com/6020549/187825850-77d6baf8-2348-4c9a-877b-e4f7cdd35643.jpg)
+![config-app](https://user-images.githubusercontent.com/6020549/187825856-b3ab44ff-2dd1-4e9a-afd0-ceca6641549d.jpg)
+
+- WiFi Setting   
+![config-wifi](https://user-images.githubusercontent.com/6020549/187825865-573ef57b-4486-4917-8775-72a55713fb38.jpg)
+
+- Broker Setting   
+![config-broker](https://user-images.githubusercontent.com/6020549/187825871-486fc80c-ed51-4402-8684-f5b812d37b9a.jpg)
+
 
 # Using Dash board   
 At first, press the Initialize button to tell the ESP32 which GPIO to use.   
