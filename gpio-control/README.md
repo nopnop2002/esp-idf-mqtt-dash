@@ -44,7 +44,7 @@ This shows that this app turns on/off GPIO12/13/14/15 at the same time.
 
 ## Add GPIO12 button   
 - Name:gpio12
-- Topic(sub):/esp32/gpio/gpio12
+- Topic(sub):/esp32/gpio/12
 - Topic(pub):(empty)
 - Payload(on):1
 - Payload(off):0
@@ -58,7 +58,7 @@ This shows that this app turns on/off GPIO12.
 
 ## Add GPIO13 button   
 - Name:gpio13
-- Topic(sub):/esp32/gpio/gpio13
+- Topic(sub):/esp32/gpio/13
 - Topic(pub):(empty)
 - Payload(on):1
 - Payload(off):0
@@ -70,7 +70,7 @@ This shows that this app turns on/off GPIO13.
 
 ## Add GPIO14 button   
 - Name:gpio14
-- Topic(sub):/esp32/gpio/gpio14
+- Topic(sub):/esp32/gpio/14
 - Topic(pub):(empty)
 - Payload(on):1
 - Payload(off):0
@@ -82,7 +82,7 @@ This shows that this app turns on/off GPIO14.
 
 ## Add GPIO15 button   
 - Name:gpio15
-- Topic(sub):/esp32/gpio/gpio15
+- Topic(sub):/esp32/gpio/15
 - Topic(pub):(empty)
 - Payload(on):1
 - Payload(off):0
@@ -119,4 +119,16 @@ At first, press the Initialize button to tell the ESP32 which GPIO to use.
 GPIO12/14 is turned off.   
 GPIO13/15 is turned on.   
 
+
+# Change topic   
+This example uses /esp32/gpio/# as the topic.   
+This topic may also be used by others.   
+Once it works, change the topic to a unique topic.   
+Example:   
+- /esp32/gpio/# --> /your_name/gpio/#
+- /esp32/gpio/init --> /your_name/gpio/init
+- /esp32/gpio/set --> /your_name/gpio/set
+- /esp32/gpio/12 --> /your_name/gpio/12
+
+![change_topic](https://user-images.githubusercontent.com/6020549/187810285-767f7e6e-d00b-441b-b2b8-5ef352a51ce8.jpg)
 
