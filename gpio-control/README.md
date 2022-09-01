@@ -120,17 +120,17 @@ GPIO12/14 is turned off.
 GPIO13/15 is turned on.   
 
 
-# Change topic   
+# Change topic after confirming work fine   
 broker.emqx.io is Public broker.   
 So, many use this broker.   
 This example uses /esp32/gpio/# as the topic.   
 This topic may also be used by others.   
 If you continue to use this broker, you have to change the topic to a unique topic.   
 Example:   
-- /esp32/gpio/# --> /your_name/gpio/#
-- /esp32/gpio/init --> /your_name/gpio/init
-- /esp32/gpio/set --> /your_name/gpio/set
-- /esp32/gpio/12 --> /your_name/gpio/12
+- /esp32/gpio/# --> /your_name/your_address/gpio/#
+- /esp32/gpio/init --> /your_name/your_address/gpio/init
+- /esp32/gpio/set --> /your_name/your_address/gpio/set
+- /esp32/gpio/12 --> /your_name/your_address/gpio/12
 
 ![change_topic](https://user-images.githubusercontent.com/6020549/187810285-767f7e6e-d00b-441b-b2b8-5ef352a51ce8.jpg)
 
