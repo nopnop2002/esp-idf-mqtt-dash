@@ -202,13 +202,11 @@ void mqtt(void *pvParameters)
 	esp_mqtt_client_register_event(mqtt_client, ESP_EVENT_ANY_ID, mqtt_event_handler, NULL);
 	esp_mqtt_client_start(mqtt_client);
 
-	//esp_mqtt_client_subscribe(mqtt_client, "/topic/test", 0);
-	//esp_mqtt_client_subscribe(mqtt_client, CONFIG_MQTT_SUB_TOPIC, 0);
-	//ESP_LOGI(TAG, "Subscribe to MQTT Server");
-
 	MQTT_t mqttBuf;
-	//int gpio_table[64];
-	//int gpio_count = 0;
+	char base_topic[64];
+	strcpy(base_topic, CONFIG_MQTT_SUB_TOPIC);
+	base_topic[strlen(CONFIG_MQTT_SUB_TOPIC)-1] = 0;
+	ESP_LOGI(TAG, "base_topic=[%s]", base_topic);
 	GPIO_t *gpios;
 	int16_t	ngpios;
 	while (1) {
@@ -223,7 +221,11 @@ void mqtt(void *pvParameters)
 		} else if (mqttBuf.topic_type == MQTT_SUB) {
 			ESP_LOGI(TAG, "TOPIC=%.*s\r", mqttBuf.topic_len, mqttBuf.topic);
 			ESP_LOGI(TAG, "DATA=%.*s\r", mqttBuf.data_len, mqttBuf.data);
-			if (strcmp(mqttBuf.topic, "/esp32/gpio/init") == 0) {
+			char bottom_topic[64];
+			int offset = strlen(CONFIG_MQTT_SUB_TOPIC) - 1;
+			strcpy(bottom_topic, &mqttBuf.topic[offset]);
+			ESP_LOGI(TAG, "bottom_topic=[%s]", bottom_topic);
+			if (strcmp(bottom_topic, "init") == 0) {
 				ESP_LOGI(TAG, "init ngpios=%d", ngpios);
 				if (ngpios != 0) continue;
 
@@ -236,12 +238,12 @@ void mqtt(void *pvParameters)
 					gpio_reset_pin(gpios[i].gpio);
 					gpio_set_direction(gpios[i].gpio, GPIO_MODE_OUTPUT );
 					gpio_set_level(gpios[i].gpio, gpios[i].value);
-					sprintf(mqttBuf.topic, "/esp32/gpio/%02d", gpios[i].gpio);
+					sprintf(mqttBuf.topic, "%s%02d", base_topic, gpios[i].gpio);
 					sprintf(mqttBuf.data, "%d", gpios[i].value);
 					esp_mqtt_client_publish(mqtt_client, mqttBuf.topic, mqttBuf.data, 0, 1, 0);
 					vTaskDelay(10);
 				}
-			} else if (strcmp(mqttBuf.topic, "/esp32/gpio/set") == 0) {
+			} else if (strcmp(bottom_topic, "set") == 0) {
 				ESP_LOGI(TAG, "set ngpios=%d", ngpios);
 				if (ngpios == 0) continue;
 				int value = atoi(mqttBuf.data);
@@ -251,7 +253,7 @@ void mqtt(void *pvParameters)
 					gpios[i].value = value;
 					gpio_set_level(gpios[i].gpio, gpios[i].value);
 					ESP_LOGI(TAG, "gpio %d set to %d", gpios[i].gpio, gpios[i].value);
-					sprintf(mqttBuf.topic, "/esp32/gpio/%02d", gpios[i].gpio);
+					sprintf(mqttBuf.topic, "%s%02d", base_topic, gpios[i].gpio);
 					sprintf(mqttBuf.data, "%d", gpios[i].value);
 					esp_mqtt_client_publish(mqtt_client, mqttBuf.topic, mqttBuf.data, 0, 1, 0);
 					vTaskDelay(10);
