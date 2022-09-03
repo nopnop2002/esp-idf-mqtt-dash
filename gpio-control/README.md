@@ -153,5 +153,7 @@ However, if you use a local broker, you won't be able to connect from outside yo
 # Control AC/DC
 Such products allow you to control AC/DC.   
 This product uses ESP32-C3-12F.   
-
 ![ESP32-AC-DC-powere](https://user-images.githubusercontent.com/6020549/188252502-a9bc238b-2256-4a4a-b96d-d0387f9cc19f.jpg)
+
+This product uses ESP32-WROOM.   
+![ESP32-WROOM-AC-DC-power_](https://user-images.githubusercontent.com/6020549/188252900-5b91f6c0-58ef-4313-ae2f-17e9c2ff3ceb.jpg)
