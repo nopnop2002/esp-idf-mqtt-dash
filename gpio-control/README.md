@@ -149,3 +149,8 @@ Example:
 As an alternative, you can use a local broker.   
 However, if you use a local broker, you won't be able to connect from outside your home.    
 
+
+# Control AC/DC
+Such products allow you to control AC/DC.   
+
+![ESP32-AC-DC-powere](https://user-images.githubusercontent.com/6020549/188252502-a9bc238b-2256-4a4a-b96d-d0387f9cc19f.jpg)
