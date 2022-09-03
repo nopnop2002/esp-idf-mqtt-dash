@@ -157,3 +157,5 @@ This product uses ESP32-C3-12F.
 
 This product uses ESP32-WROOM.   
 ![ESP32-WROOM-AC-DC-power_](https://user-images.githubusercontent.com/6020549/188252900-5b91f6c0-58ef-4313-ae2f-17e9c2ff3ceb.jpg)
+
+You can easily make something similar yourself.   
