@@ -159,3 +159,5 @@ This product uses ESP32-WROOM.
 ![ESP32-WROOM-AC-DC-power_](https://user-images.githubusercontent.com/6020549/188252900-5b91f6c0-58ef-4313-ae2f-17e9c2ff3ceb.jpg)
 
 You can easily make something similar yourself.   
+This is my pcb.   
+![my-pcb](https://user-images.githubusercontent.com/6020549/188292802-f8c0f5a7-5b46-4265-be17-901ea71b8ccb.JPG)
