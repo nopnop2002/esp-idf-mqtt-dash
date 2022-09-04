@@ -2,7 +2,7 @@
 IR Control using MQTT Dash.   
 
 # Background
-I have an mp3 player.   
+I have an DVD player.   
 It can be operated with an infrared remote control.   
 In addition to the infrared remote control, I wanted to operate it from Android as well.   
 
