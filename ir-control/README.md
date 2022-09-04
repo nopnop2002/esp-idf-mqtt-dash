@@ -103,7 +103,7 @@ This is a Public Broker that anyone can use.
 - Icon Image:Choose your favorite one
 - Icon Color:Choose your favorite one
 
-This indicates that ir addr is 0x00 and ir cmd is 0x45.
+This says to fire infrared with ir addr at 0x00 and ir cmd at 0x45.   
 
 ![power](https://user-images.githubusercontent.com/6020549/188301398-cbc95476-a779-46d2-8d01-daab443364a0.jpg)
 
