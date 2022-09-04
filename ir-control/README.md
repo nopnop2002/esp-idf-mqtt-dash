@@ -36,8 +36,9 @@ In addition to the infrared remote control, I wanted to operate it from Android 
                                |
                                |
  ESP32 GND --------------------+
-R1 follows your infrared transmitter specifications.
-R2 follows your transistor specifications.
+
+R1 follows your infrared transmitter specifications. If you don't know, 220 ohms is fine
+R2 follows your transistor specifications. If you don't know, 2.2K ohms is fine.
 ```
 
 # How to get IR code
