@@ -42,6 +42,8 @@ R2 follows your transistor specifications.
 
 # How to get IR code
 You can get IR code using [this](https://github.com/nopnop2002/esp-idf-irSend/tree/master/esp-idf-irAnalysis).   
+__Note:__   
+There are several formats for infrared, but only the NEC format is supported.   
 
 ```
 git clone https://github.com/nopnop2002/esp-idf-irSend
