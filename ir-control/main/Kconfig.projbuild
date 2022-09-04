@@ -1,0 +1,58 @@
+menu "Application Configuration"
+
+	config GPIO_RANGE_MAX
+		int
+		default 33 if IDF_TARGET_ESP32
+		default 46 if IDF_TARGET_ESP32S2
+		default 19 if IDF_TARGET_ESP32C3
+		default 48 if IDF_TARGET_ESP32S3
+
+	menu "WiFi Setting"
+
+		config ESP_WIFI_SSID
+			string "WiFi SSID"
+			default "myssid"
+			help
+				SSID (network name) to connect to.
+
+		config ESP_WIFI_PASSWORD
+			string "WiFi Password"
+			default "mypassword"
+			help
+				WiFi password (WPA or WPA2) to use.
+
+		config ESP_MAXIMUM_RETRY
+			int "Maximum retry"
+			default 5
+			help
+				Set the Maximum retry to avoid station reconnecting to the AP unlimited when the AP is really inexistent.
+
+	endmenu
+
+	menu "Broker Setting"
+
+		config BROKER_URL
+			string "Broker URL"
+			default "mqtt://broker.emqx.io"
+			help
+				URL of the broker to connect to
+
+		config MQTT_SUB_TOPIC
+			string "Subscribe Topic"
+			default "/esp32/remote/#"
+			help
+				Topic of subscribe
+
+	endmenu
+
+	menu "IR Transmitter Setting"
+
+		config RMT_TX_GPIO_NUM
+			int "IR Transmitter GPIO"
+			range 0 GPIO_RANGE_MAX
+			default 12
+			help
+				IR Transmitter GPIO.
+	endmenu
+
+endmenu
