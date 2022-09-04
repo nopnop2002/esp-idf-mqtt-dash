@@ -17,16 +17,18 @@ In addition to the infrared remote control, I wanted to operate it from Android 
  M5StickC+ : GPIO9   
  M5Atom(Lite) : GPIO12   
  Of course, you can also use other than that.   
- Scematic:
+ Schematic:
  ```
  ESP32 5V  ---------------------+
+                                |
+                               R1
                                 |
                                === IR Transmitter
                                 |
                                /
                               /
                              /
- ESP32 GPIO ------ R1 ------|   S8050
+ ESP32 GPIO ------ R2 ------|   S8050
                              \
                               \
                                \
@@ -34,6 +36,8 @@ In addition to the infrared remote control, I wanted to operate it from Android 
                                |
                                |
  ESP32 GND --------------------+
+R1 follows your infrared transmitter specifications.
+R2 follows your transistor specifications.
 ```
 
 # How to get IR code
