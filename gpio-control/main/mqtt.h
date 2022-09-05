@@ -1,10 +1,6 @@
-#define	MQTT_CONNECT 100
-#define	MQTT_DISCONNECT 200
-#define	MQTT_PUB 300
-#define	MQTT_SUB 400
-#define	MQTT_ERROR 900
-
 typedef struct {
+	TaskHandle_t taskHandle;
+	int32_t event_id;
     int topic_type;
     int topic_len;
     char topic[64];

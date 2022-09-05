@@ -19,9 +19,6 @@
 
 #include "mqtt.h"
 
-QueueHandle_t xQueuePublish;
-QueueHandle_t xQueueSubscribe;
-
 /* FreeRTOS event group to signal when we are connected*/
 static EventGroupHandle_t s_wifi_event_group;
 
@@ -141,10 +138,6 @@ void app_main(void)
 
 	ESP_LOGI(TAG, "ESP_WIFI_MODE_STA");
 	wifi_init_sta();
-
-	// Create queue
-	xQueueSubscribe = xQueueCreate( 10, sizeof(MQTT_t) );
-	configASSERT( xQueueSubscribe );
 
 	// Start MQTT task
 	xTaskCreate(mqtt, "MQTT", 1024*4, NULL, 2, NULL);
