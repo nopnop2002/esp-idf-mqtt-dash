@@ -13,8 +13,6 @@
 #include <math.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
-#include "freertos/queue.h"
-#include "freertos/event_groups.h"
 #include "esp_log.h"
 #include "esp_event.h"
 #include "esp_mac.h"
@@ -24,8 +22,6 @@
 #include "mqtt.h"
 
 static const char *TAG = "MQTT";
-
-extern QueueHandle_t xQueueSubscribe;
 
 /*
  * @brief Event handler registered to receive MQTT events
@@ -42,21 +38,17 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
 	ESP_LOGD(TAG, "Event dispatched from event loop base=%s, event_id=%d", base, event_id);
 	esp_mqtt_event_handle_t event = event_data;
 
-	MQTT_t mqttBuf;
+	MQTT_t *mqttBuf = event->user_context;
+	ESP_LOGI(TAG, "taskHandle=%x", mqttBuf->taskHandle);
+	mqttBuf->event_id = event_id;
 	switch ((esp_mqtt_event_id_t)event_id) {
 		case MQTT_EVENT_CONNECTED:
 			ESP_LOGI(TAG, "MQTT_EVENT_CONNECTED");
-			mqttBuf.topic_type = MQTT_CONNECT;
-			if (xQueueSendFromISR(xQueueSubscribe, &mqttBuf, NULL) != pdPASS) {
-				ESP_LOGE(TAG, "xQueueSend Fail");
-			}
+			xTaskNotifyGive( mqttBuf->taskHandle );
 			break;
 		case MQTT_EVENT_DISCONNECTED:
 			ESP_LOGI(TAG, "MQTT_EVENT_DISCONNECTED");
-			mqttBuf.topic_type = MQTT_DISCONNECT;
-			if (xQueueSendFromISR(xQueueSubscribe, &mqttBuf, NULL) != pdPASS) {
-				ESP_LOGE(TAG, "xQueueSend Fail");
-			}
+			xTaskNotifyGive( mqttBuf->taskHandle );
 			break;
 		case MQTT_EVENT_SUBSCRIBED:
 			ESP_LOGI(TAG, "MQTT_EVENT_SUBSCRIBED, msg_id=%d", event->msg_id);
@@ -70,30 +62,22 @@ static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_
 		case MQTT_EVENT_DATA:
 			ESP_LOGI(TAG, "MQTT_EVENT_DATA");
 			ESP_LOGI(TAG, "TOPIC=[%.*s] DATA=[%.*s]\r", event->topic_len, event->topic, event->data_len, event->data);
-			//ESP_LOGI(TAG, "DATA=%.*s\r", event->data_len, event->data);
 
-			//MQTT_t mqttBuf;
-			mqttBuf.topic_type = MQTT_SUB;
-			mqttBuf.topic_len = event->topic_len;
+			mqttBuf->topic_len = event->topic_len;
 			for(int i=0;i<event->topic_len;i++) {
-				mqttBuf.topic[i] = event->topic[i];
-				mqttBuf.topic[i+1] = 0;
+				mqttBuf->topic[i] = event->topic[i];
+				mqttBuf->topic[i+1] = 0;
 			}
-			mqttBuf.data_len = event->data_len;
+			mqttBuf->data_len = event->data_len;
 			for(int i=0;i<event->data_len;i++) {
-				mqttBuf.data[i] = event->data[i];
-				mqttBuf.data[i+1] = 0;
+				mqttBuf->data[i] = event->data[i];
+				mqttBuf->data[i+1] = 0;
 			}
-			if (xQueueSendFromISR(xQueueSubscribe, &mqttBuf, NULL) != pdPASS) {
-				ESP_LOGE(TAG, "xQueueSend Fail");
-			}
+			xTaskNotifyGive( mqttBuf->taskHandle );
 			break;
 		case MQTT_EVENT_ERROR:
 			ESP_LOGI(TAG, "MQTT_EVENT_ERROR");
-			mqttBuf.topic_type = MQTT_ERROR;
-			if (xQueueSendFromISR(xQueueSubscribe, &mqttBuf, NULL) != pdPASS) {
-				ESP_LOGE(TAG, "xQueueSend Fail");
-			}
+			xTaskNotifyGive( mqttBuf->taskHandle );
 			break;
 		default:
 			ESP_LOGI(TAG, "Other event id:%d", event->event_id);
@@ -183,7 +167,11 @@ void mqtt(void *pvParameters)
 	//strcpy(client_id, pcTaskGetName(NULL));
 	sprintf(client_id, "esp32-%02x%02x%02x%02x%02x%02x", mac[0],mac[1],mac[2],mac[3],mac[4],mac[5]);
 	ESP_LOGI(TAG, "client_id=[%s]", client_id);
+
+	MQTT_t mqttBuf;
+	mqttBuf.taskHandle = xTaskGetCurrentTaskHandle();
 	esp_mqtt_client_config_t mqtt_cfg = {
+		.user_context = &mqttBuf,
 		.uri = CONFIG_BROKER_URL,
 		.client_id = client_id
 	};
@@ -198,23 +186,24 @@ void mqtt(void *pvParameters)
 	strcpy(base_topic, CONFIG_MQTT_SUB_TOPIC);
 	base_topic[base_topic_len] = 0;
 	ESP_LOGI(TAG, "base_topic=[%s]", base_topic);
-	MQTT_t mqttBuf;
+
 	GPIO_t gpios[10];
 	int16_t	ngpios=0;
-	while (1) {
-		xQueueReceive(xQueueSubscribe, &mqttBuf, portMAX_DELAY);
-		ESP_LOGI(TAG, "xQueueReceive type=%d", mqttBuf.topic_type);
 
-		if (mqttBuf.topic_type == MQTT_CONNECT) {
+	while (1) {
+		ulTaskNotifyTake( pdTRUE, portMAX_DELAY );
+		ESP_LOGI(TAG, "event_id=%d", mqttBuf.event_id);
+
+		if (mqttBuf.event_id == MQTT_EVENT_CONNECTED) {
 			esp_mqtt_client_subscribe(mqtt_client, CONFIG_MQTT_SUB_TOPIC, 0);
 			ESP_LOGI(TAG, "Subscribe to MQTT Server");
-		} else if (mqttBuf.topic_type == MQTT_DISCONNECT) {
+		} else if (mqttBuf.event_id == MQTT_EVENT_DISCONNECTED) {
 			break;
-		} else if (mqttBuf.topic_type == MQTT_SUB) {
-			ESP_LOGI(TAG, "TOPIC=%.*s\r", mqttBuf.topic_len, mqttBuf.topic);
-			ESP_LOGI(TAG, "DATA=%.*s\r", mqttBuf.data_len, mqttBuf.data);
+		} else if (mqttBuf.event_id == MQTT_EVENT_DATA) {
+			ESP_LOGD(TAG, "TOPIC=%.*s\r", mqttBuf.topic_len, mqttBuf.topic);
+			ESP_LOGD(TAG, "DATA=%.*s\r", mqttBuf.data_len, mqttBuf.data);
 			// get bottom topic
-			// /esp32/led/5 --> 5
+			// /esp32/led/12 --> 12
 			char bottom_topic[64];
 			strcpy(bottom_topic, &mqttBuf.topic[base_topic_len]);
 			ESP_LOGI(TAG, "bottom_topic=[%s]", bottom_topic);
@@ -228,23 +217,26 @@ void mqtt(void *pvParameters)
 				for(int i=0;i<ngpios;i++) {
 					if (gpio == gpios[i].gpio) channel = i;
 				}
-				ESP_LOGI(TAG, "channel =%d", channel);
+				ESP_LOGI(TAG, "channel=%d", channel);
 				// Set the LEDC peripheral configuration
 				if (channel < 0) {
 					if (ngpios == 7) {
 						ESP_LOGE(TAG, "The maximum number of LEDC channels is 8 from 0 to 7");
 					} else {
-						ESP_LOGI(TAG, "ledc_init gpio=%d", gpio);
-						gpios[ngpios].gpio = gpio;
-						ledc_init(gpios[ngpios].gpio, ngpios);
 						channel = ngpios;
+						ESP_LOGI(TAG, "ledc_init gpio=%d channel=%d", gpio, channel);
+						gpios[ngpios].gpio = gpio;
+						ledc_init(gpios[ngpios].gpio, channel);
 						ngpios++;
 					}
 				}
 				// Set duty
-				if (channel >= 0) ledc_duty(channel, value);
+				if (channel >= 0) {
+					ESP_LOGI(TAG, "ledc_duty channel=%d value=%d", channel, value);
+					ledc_duty(channel, value);
+				}
 			}
-		} else if (mqttBuf.topic_type == MQTT_ERROR) {
+		} else if (mqttBuf.event_id == MQTT_EVENT_ERROR) {
 			break;
 		}
 	} // end while
