@@ -3,7 +3,7 @@ typedef struct {
 	int32_t event_id;
 	int topic_type;
 	int topic_len;
-	char topic[64];
+	char topic[72];
 	int data_len;
 	char data[64];
 } MQTT_t;
