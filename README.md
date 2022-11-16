@@ -21,3 +21,8 @@ This is some example using esp-idf.
 
 - IR control   
 ![dash-board](https://user-images.githubusercontent.com/6020549/188301626-243ecf9d-23b8-462a-95ae-ec3e50309dbc.jpg)
+
+
+# Software requirements
+esp-idf v4.4/v5.0.   
+
