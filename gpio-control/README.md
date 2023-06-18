@@ -160,4 +160,5 @@ This product uses ESP32-WROOM.
 
 You can easily make something similar yourself.   
 This is my pcb.   
+Use MQTT Dash to power on/off USB.   
 ![my-pcb](https://user-images.githubusercontent.com/6020549/188292802-f8c0f5a7-5b46-4265-be17-901ea71b8ccb.JPG)
