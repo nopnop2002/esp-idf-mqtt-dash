@@ -230,7 +230,7 @@ Specifies the username and password if the server requires a password when conne
 ![config-broker-2](https://github.com/nopnop2002/esp-idf-mqtt-dash/assets/6020549/fd1a02d5-dd15-40c4-9afd-bf439cab8f85)
 
 
-- IR Transmitter Setting   
+## IR Transmitter Setting   
 
 ![config-transmitter](https://user-images.githubusercontent.com/6020549/188301703-ce0c2d42-7a05-4612-a5d3-a6cb14758d5b.jpg)
 
