@@ -19,6 +19,7 @@ This is a Public Broker that anyone can use.
 - Topic(sub):(empty)
 - Topic(pub):/esp32/gpio/init
 - Payload(on):12/13=1/14/15=1
+ This means GPIO12=0, GPIO13=1, GPIO14=0, GPIO15=1 are the initial values.   
 - Payload(off):12/13=1/14/15=1
 - Icon Image:Choose your favorite one
 - Icon Color:Choose your favorite one
@@ -115,15 +116,27 @@ idf.py flash
 ```
 
 ![config-main](https://user-images.githubusercontent.com/6020549/187825850-77d6baf8-2348-4c9a-877b-e4f7cdd35643.jpg)
-![config-app](https://user-images.githubusercontent.com/6020549/187825856-b3ab44ff-2dd1-4e9a-afd0-ceca6641549d.jpg)
+![config-app](https://github.com/nopnop2002/esp-idf-mqtt-dash/assets/6020549/ed8fdc0d-a9b5-413d-b5d6-01f6e0b81d56)
 
-- WiFi Setting   
+## WiFi Setting   
 
 ![config-wifi](https://user-images.githubusercontent.com/6020549/187825865-573ef57b-4486-4917-8775-72a55713fb38.jpg)
 
-- Broker Setting   
+## MQTT Server Setting   
 
-![config-broker](https://user-images.githubusercontent.com/6020549/187825871-486fc80c-ed51-4402-8684-f5b812d37b9a.jpg)
+MQTT broker is specified by one of the following.
+- IP address   
+ ```192.168.10.20```   
+- mDNS host name   
+ ```mqtt-broker.local```   
+- Fully Qualified Domain Name   
+ ```broker.emqx.io```
+
+![config-broker-1](https://github.com/nopnop2002/esp-idf-mqtt-dash/assets/6020549/15534962-3eff-4f9b-8dda-07c7dbea88d0)
+
+Specifies the username and password if the server requires a password when connecting.   
+
+![config-broker-2](https://github.com/nopnop2002/esp-idf-mqtt-dash/assets/6020549/804f1cd9-662b-4718-9f07-5d546258518c)
 
 
 # Using Dash board   
