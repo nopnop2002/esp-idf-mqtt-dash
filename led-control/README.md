@@ -88,15 +88,27 @@ idf.py flash
 ```
 
 ![config-main](https://user-images.githubusercontent.com/6020549/187846304-0a2ee09a-d5dd-4086-b4e5-e22a5d747174.jpg)
-![config-app](https://user-images.githubusercontent.com/6020549/187846313-4eb9f68d-00a3-4e8b-b5fb-1bb8e9460491.jpg)
+![config-app](https://github.com/nopnop2002/esp-idf-mqtt-dash/assets/6020549/8f97a8a6-7594-47a7-8ae8-afd9a3f54597)
 
-- WiFi Setting   
+## WiFi Setting   
 
 ![config-wifi](https://user-images.githubusercontent.com/6020549/187846367-0d1c3c9f-8e81-42bd-8c23-c5730e61ee13.jpg)
 
-- Broker Setting   
+## MQTT Server Setting   
 
-![config-broker](https://user-images.githubusercontent.com/6020549/187846400-67ccfa50-8ea2-4166-9834-870c903a27c0.jpg)
+MQTT broker is specified by one of the following.
+- IP address   
+ ```192.168.10.20```   
+- mDNS host name   
+ ```mqtt-broker.local```   
+- Fully Qualified Domain Name   
+ ```broker.emqx.io```
+
+![config-broker-1](https://github.com/nopnop2002/esp-idf-mqtt-dash/assets/6020549/7843831e-7fda-47fa-b05e-4170630a4e4c)
+
+Specifies the username and password if the server requires a password when connecting.   
+
+![config-broker-2](https://github.com/nopnop2002/esp-idf-mqtt-dash/assets/6020549/d9f3b896-64f0-4e2b-bcc5-9094568583bc)
 
 
 # Using Dash board   
