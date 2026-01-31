@@ -23,5 +23,6 @@ This is some example using esp-idf.
 
 
 # Software requirements
-esp-idf v4.4/v5.0.   
+ESP-IDF V5.0 or later.   
+ESP-IDF V4.4 release branch reached EOL in July 2024.   
 
