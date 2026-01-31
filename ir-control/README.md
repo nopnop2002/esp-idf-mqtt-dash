@@ -13,9 +13,13 @@ In addition to the infrared remote control, I wanted to operate it from Android 
  Used for parsing infrared codes.   
 
 - IR Transmitter   
- M5StickC+ and M5Atom(Lite) have built-in infrared transmitter.   
- M5StickC+ : GPIO9   
- M5Atom(Lite) : GPIO12   
+ Some M5 products have a built-in infrared transmitter.   
+ M5Stick : GPIO17   
+ M5StickC : GPIO9   
+ M5StickC Plus : GPIO9   
+ M5StickC Plus2 : GPIO19   
+ M5Atom Matrix : GPIO12   
+ M5Atom Lite : GPIO12   
  Of course, you can also use other than that.   
  Circuit diagram when using 5V driven IR Transmitter:
  ```
