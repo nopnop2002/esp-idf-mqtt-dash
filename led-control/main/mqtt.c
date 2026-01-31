@@ -1,10 +1,11 @@
-/* MQTT (over TCP) Example
+/*
+	MQTT (over TCP) Example
 
-	 This example code is in the Public Domain (or CC0 licensed, at your option.)
+	This example code is in the Public Domain (or CC0 licensed, at your option.)
 
-	 Unless required by applicable law or agreed to in writing, this
-	 software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
-	 CONDITIONS OF ANY KIND, either express or implied.
+	Unless required by applicable law or agreed to in writing, this
+	software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+	CONDITIONS OF ANY KIND, either express or implied.
 */
 
 #include <stdio.h>
@@ -24,18 +25,10 @@
 
 static const char *TAG = "MQTT";
 
-#if ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(5, 0, 0)
 static void mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_t event_id, void *event_data)
-#else
-static esp_err_t mqtt_event_handler(esp_mqtt_event_handle_t event)
-#endif
 {
-#if ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(5, 0, 0)
 	esp_mqtt_event_handle_t event = event_data;
 	MQTT_t *mqttBuf = handler_args;
-#else
-	MQTT_t *mqttBuf = event->user_context;
-#endif
 	ESP_LOGI(TAG, "taskHandle=0x%x", (unsigned int)mqttBuf->taskHandle);
 	mqttBuf->event_id = event_id;
 	switch (event->event_id) {
@@ -80,9 +73,6 @@ static esp_err_t mqtt_event_handler(esp_mqtt_event_handle_t event)
 			ESP_LOGI(TAG, "Other event id:%d", event->event_id);
 			break;
 	}
-#if ESP_IDF_VERSION < ESP_IDF_VERSION_VAL(5, 0, 0)
-	return ESP_OK;
-#endif
 }
 
 typedef struct {
@@ -181,7 +171,6 @@ void mqtt(void *pvParameters)
 
 	MQTT_t mqttBuf;
 	mqttBuf.taskHandle = xTaskGetCurrentTaskHandle();
-#if ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(5, 0, 0)
 	esp_mqtt_client_config_t mqtt_cfg = {
 		.broker.address.uri = uri,
 		.broker.address.port = 1883,
@@ -191,26 +180,9 @@ void mqtt(void *pvParameters)
 #endif
 		.credentials.client_id = client_id
 	};
-#else
-	esp_mqtt_client_config_t mqtt_cfg = {
-		.user_context = &mqttBuf,
-		.uri = uri,
-		.port = 1883,
-		.event_handle = mqtt_event_handler,
-#if CONFIG_BROKER_AUTHENTICATION
-		.username = CONFIG_AUTHENTICATION_USERNAME,
-		.password = CONFIG_AUTHENTICATION_PASSWORD,
-#endif
-		.client_id = client_id
-	};
-#endif
 
 	esp_mqtt_client_handle_t mqtt_client = esp_mqtt_client_init(&mqtt_cfg);
-
-#if ESP_IDF_VERSION >= ESP_IDF_VERSION_VAL(5, 0, 0)
 	esp_mqtt_client_register_event(mqtt_client, ESP_EVENT_ANY_ID, mqtt_event_handler, &mqttBuf);
-#endif
-
 	esp_mqtt_client_start(mqtt_client);
 
 	int base_topic_len = strlen(CONFIG_MQTT_SUB_TOPIC)-1;
